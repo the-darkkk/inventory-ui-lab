@@ -13,7 +13,7 @@ export const InventoryProvider = ({ children }) => {
       const response = await inventoryApi.getAll();
       setItems(response.data);
     } catch (error) {
-      console.error("Помилка завантаження інвентарю:", error);
+      console.error("Помилка завантаження інвентарю", error);
     } finally {
       setLoading(false);
     }
