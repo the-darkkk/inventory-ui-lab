@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { inventoryApi } from '../../services/inventoryApi';
-import { InventoryContext } from '../../store/InventoryContext';
+import { inventoryApi } from '../services/inventoryApi';
+import { InventoryContext } from '../store/InventoryContext';
 
 export default function AdminInventoryForm() {
   const navigate = useNavigate();
-  const { fetchItems } = useContext(InventoryContext);
+  const { fetchItems } = u1seContext(InventoryContext);
   
   const [formData, setFormData] = useState({
     inventory_name: '',

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { InventoryContext } from '../../store/InventoryContext';
-import { inventoryApi } from '../../services/inventoryApi';
+import { InventoryContext } from '../store/InventoryContext';
+import { inventoryApi } from '../services/inventoryApi';
 
 export default function AdminInventory() {
   const { items, loading, fetchItems } = useContext(InventoryContext);
