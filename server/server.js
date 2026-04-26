@@ -8,15 +8,15 @@ const fs = require('fs');
 const app = express();
 const PORT = 3000;
 
-// Let frontend talk to us
+// Middleware
 app.use(cors());
 app.use(express.json()); // Parse JSON, handy for PUT updates
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve up those photos
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // save photos
 
 // Setting up our SQLite db
 const db = new sqlite3.Database('./inventory.db', (err) => {
-    if (err) console.error('Oops, db connection failed:', err);
-    else console.log('Sweet, connected to SQLite.');
+    if (err) console.error('db connection error:', err);
+    else console.log('db connected');
 });
 
 // Create table if it doesn't exist
@@ -92,7 +92,7 @@ app.put('/inventory/:id/photo', upload.single('photo'), (req, res) => {
 
     const new_photo_url = `/uploads/${req.file.filename}`;
     
-    // Grab the old photo to maybe delete it from disk, then update the record
+    // delete the old photo if there were
     db.get(`SELECT photo_url FROM items WHERE id = ?`, [req.params.id], (err, row) => {
         if (row && row.photo_url) {
             const oldPath = path.join(__dirname, row.photo_url);
@@ -108,11 +108,11 @@ app.put('/inventory/:id/photo', upload.single('photo'), (req, res) => {
 
 // 6. DELETE - DELETE /inventory/:id
 app.delete('/inventory/:id', (req, res) => {
-    // First, grab the photo url to delete the file
+    // check name
     db.get(`SELECT photo_url FROM items WHERE id = ?`, [req.params.id], (err, row) => {
         if (row && row.photo_url) {
             const filePath = path.join(__dirname, row.photo_url);
-            if (fs.existsSync(filePath)) fs.unlinkSync(filePath); // Nuke the file from disk
+            if (fs.existsSync(filePath)) fs.unlinkSync(filePath); // delete
         }
 
         // Then delete the record from db
@@ -123,7 +123,6 @@ app.delete('/inventory/:id', (req, res) => {
     });
 });
 
-// Fire up the server
 app.listen(PORT, () => {
     console.log(`Backend server is running at http://localhost:${PORT}`);
 });

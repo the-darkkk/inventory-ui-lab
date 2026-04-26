@@ -24,10 +24,10 @@ export default function AdminInventoryEdit() {
 
   const handleEdit = async (formData, newPhoto) => {
     try {
-      // 1. Оновлюємо текст (формат JSON) згідно з вимогою
+      // request the text update
       await inventoryApi.updateText(id, formData);
       
-      // 2. Якщо вибрано нове фото, оновлюємо його (формат FormData)
+      // if there's a photo update it too (form data)
       if (newPhoto) {
         const photoData = new FormData();
         photoData.append('photo', newPhoto);
