@@ -11,7 +11,14 @@ export default function Gallery() {
 
   useEffect(() => {
     const fetchItems = async () => {
-    // todo
+      try {
+        const response = await inventoryApi.getAll();
+        setItems(response.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchItems();
   }, []);
@@ -23,6 +30,8 @@ export default function Gallery() {
         items={items} 
         loading={loading} 
         error={error}
+        isFavorite={isFavorite}
+        toggleFavorite={toggleFavorite}
       />
     </div>
   );
